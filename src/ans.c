@@ -23,27 +23,45 @@ char in[30];
 struct{
 	// char op[4];
 	char w_reg[4];
-	char r_reg1[4];
-	char r_reg2[4];
-	int cycle;
+	int delay;
 } instruction;
 struct instruction inst[4],cur_inst;
+short cycle;
 
 int check_read()
+{
+	for(int i = 0;i < 4;++i){
+		if()
+	}
+}
 
 int calc_cycle()
 {
-	sscanf(in,"%s",command);
-	if(!strcmp(command,"lw")){
-		int tmp;
-		cur_inst.w_reg = "$0";
-		sscanf(in+3, "%s,%d(%s)",cur_inst.r_reg1, tmp, cur_inst.r_reg2);
-		return MAX(check_read(cur_inst.r_reg1), check_read(cur_inst.r_reg2));
-	}
-	else if(!strcmp(command,"sw"));
-	else if(!strcmp(command,"beq"));
-	else ;
+	char command[4];
+	char r_reg[2][4];
+	int tmp;
 
+	sscanf(in, "%s", command);
+	// lw
+	if(!strcmp(command, "lw")){
+		cur_inst.delay = 1;
+		sscanf(in + 3, "%s,%d(%s)", cur_inst.w_reg, tmp, r_reg[0]);
+		return check_read(r_reg[0]);
+	}
+	// sw
+	else if(!strcmp(command, "sw")){
+		cur_inst.w_reg = "$0";
+		cur_inst.delay = 0;
+		sscanf(in + 3, "%s,%d(%s)", r_reg[0], tmp, r_reg[1]);
+		return MAX(check_read(r_reg[0]), check_read(r_reg[1]));
+	}
+	// beq
+////else if(!strcmp(command, "beq")){
+////	cur_inst.w_reg = ""
+////}
+	// R-type
+	else {
+	}
 }
 
 int main(int argc, char* argv[])
@@ -65,23 +83,21 @@ int main(int argc, char* argv[])
 	}
 
 	// init inst to nop
-	for(int i = 1;i < 5;++i)
+	for(int i = 1;i < 4;++i)
 		inst[i] = {"$0","$0","$0",i};
 
 	// start input & calculate
 	char command[4];
-	short cycle;
 	while(fgets(in,sizeof(in),stdin) != EOF){
 		// calc cycle
 		cycle = calc_cycle();
-		inst[4].cycle = cycle;
 		printf("%d\n", cycle);
 
 		// move instruction list to old
 		// TODO: rewrite into linked list to increase performance;
-		for(int i=0;i<2;++i)
-			inst[i] = inst[i+1];
-		inst[4] = cur_inst;
+		inst[0] = cur_inst;
+		for(int i=1;i<4;++i)
+			inst[i] = inst[i-1];
 	}
 
 	return 0;
