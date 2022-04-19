@@ -23,16 +23,20 @@ char in[30];
 struct{
 	// char op[4];
 	char w_reg[4];
-	int delay;
+	uint8_t delay;
 } instruction;
 struct instruction inst[4],cur_inst;
 short cycle;
 
-int check_read()
+// check how many cycle 
+int check_read(char r_reg[4])
 {
-	for(int i = 0;i < 4;++i){
-		if()
+	uint8_t max = 0;
+	for(int i = 0; i < 4 ; ++i){
+		if(!strcmp(r_reg, inst[i].w_reg) && (max < delay - i))
+			max = delay - i;
 	}
+	return max;
 }
 
 int calc_cycle()
@@ -56,9 +60,9 @@ int calc_cycle()
 		return MAX(check_read(r_reg[0]), check_read(r_reg[1]));
 	}
 	// beq
-////else if(!strcmp(command, "beq")){
-////	cur_inst.w_reg = ""
-////}
+    else if(!strcmp(command, "beq")){
+    	cur_inst.w_reg = ""
+    }
 	// R-type
 	else {
 	}
@@ -69,9 +73,9 @@ int main(int argc, char* argv[])
 	// init parameter
 	char *tmp;
 	for(int i = 0;i < argc;++i){
-		if(!strcmp(argv[i], "-fw"))
+		if(!strcmp(argv[i], "-fw")) // have forwarding
 			fw = 1;
-		else if(!strncmp(argv[i], "-bd=", 4)){
+		else if(!strncmp(argv[i], "-bd=", 4)){ // where start branch
 			tmp = argv[i]+3;
 			if(!strcmp(tmp, "ID"))
 				bd = ID;
