@@ -1,28 +1,25 @@
-INST := instruction_input
-OUT := out.log
+SHELL := /bin/bash
 
-OUT_DIR := build
 SRC_DIR := src
-TEST_DIR := test
+OUT_DIR := output
 
 FORMAT := clang-format
-CC := g++
-CFLAG := -O2 -g -Wall -I
+CC := gcc
+CFLAG := -g -Wall -I
 
-SRC := $(wildcard ./$(SRC_DIR)/*.cpp)
+SRC := $(wildcard ./$(SRC_DIR)/*.c)
 SRC2 := $(notdir $(SRC))
-OBJ := $(SRC2:%.cpp=%.o)
+OBJ := $(SRC2:%.c=%.o)
 
+all: $(OBJ)
+	$(CC) -o $(OUT_DIR)/cycle_calculator $(OUT_DIR)/$(OBJ)
 
-test: all
-	$(OUT_DIR)/reram_simulator < $(TEST_DIR)/$(INST) > $(OUT_DIR)/$(OUT)
+%.o: $(SRC_DIR)/%.c
+	$(CC) -o $(OUT_DIR)/$@ -c $(CFLAGS) $<
 
-
-all: init $(OBJ)
-	$(CC) -o $(OUT_DIR)/reram_simulator $(OUT_DIR)/$(OBJ)
+clean:
+	rm $(OUT_DIR)/*.o
 
 format:
 	@echo "format all files"
-	@find . -name '*.h' -or -name '*.hpp' -or -name '*.cpp' | xargs clang-format -i -style=file $1
-
-
+	@find . -name '*.h' -or -name '*.cpp' -or -name '*.c' | xargs clang-format -i -style=file $1

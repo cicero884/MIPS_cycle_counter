@@ -1,5 +1,5 @@
-#include<stdio.h>
-// variable: -reg_num = 8, -ins_num = 5, 
+#include <stdio.h>
+// variable: -reg_num = 8, -ins_num = 5,
 //
 // possible:RAW
 // in reg
@@ -11,13 +11,12 @@
 // w: sw
 
 // generate sw/lw/add with all posibility
-void generate_instruction(int cnt){
-	if(cnt){
-		if()
-	}
-	else printf("\n")
+void generate_instruction(int cnt)
+{
+    if (cnt) {
+        if ()
+    } else
+        printf("\n")
 }
 
-int main(int argc, char *argv[]){
-	
-}
+int main(int argc, char *argv[]) {}
